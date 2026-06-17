@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "537016403482",
+    "project_id": "finalproject-3e766",
+    "storage_bucket": "finalproject-3e766.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537016403482:android:5c279bc43a5541829af3a3",
+        "android_client_info": {
+          "package_name": "com.project.gold_exchange_shop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDteBT6-Olef8YxuxMnltMF2J2Rh9-ECjg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

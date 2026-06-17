@@ -1,0 +1,96 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Username -> { uid, email, usernameLower }
+    match /usernames/{usernameLower} {
+      // Needed for login (username -> email lookup) before Firebase Auth session exists.
+      // Allows fetching a single doc by id, while blocking list / queries.
+      allow get: if true;
+      allow list: if false;
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email is string
+        && request.resource.data.usernameLower == usernameLower
+        && request.resource.data.keys().hasOnly(['uid','email','usernameLower']);
+      allow update, delete: if false;
+    }
+
+    // Shop profile doc: shops/{uid}
+    match /shops/{uid} {
+      allow read: if isOwner(uid);
+
+      allow create: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['uid','username','email','shopName','shopAddress'])
+        && request.resource.data.uid == uid
+        && request.resource.data.username is string
+        && request.resource.data.email is string
+        && request.resource.data.shopName is string
+        && request.resource.data.shopAddress is string;
+
+      // Only shopName + shopAddress are editable
+      allow update: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['uid','username','email','shopName','shopAddress'])
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.username == resource.data.username
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.shopName is string
+        && request.resource.data.shopAddress is string;
+
+      allow delete: if false;
+
+      // Inventory: shops/{uid}/state/inventory
+      match /state/inventory {
+        allow read: if isOwner(uid);
+
+        allow create: if isOwner(uid)
+          && request.resource.data.keys().hasOnly(['goldGrams','balances'])
+          && request.resource.data.goldGrams is number
+          && request.resource.data.goldGrams >= 0
+          && request.resource.data.balances is map
+          && request.resource.data.balances.USD is number
+          && request.resource.data.balances.EUR is number
+          && request.resource.data.balances.TRY is number
+          && request.resource.data.balances.USD >= 0
+          && request.resource.data.balances.EUR >= 0
+          && request.resource.data.balances.TRY >= 0;
+
+        allow update: if isOwner(uid)
+          && request.resource.data.keys().hasOnly(['goldGrams','balances'])
+          && request.resource.data.goldGrams is number
+          && request.resource.data.goldGrams >= 0
+          && request.resource.data.balances is map
+          && request.resource.data.balances.USD is number
+          && request.resource.data.balances.EUR is number
+          && request.resource.data.balances.TRY is number
+          && request.resource.data.balances.USD >= 0
+          && request.resource.data.balances.EUR >= 0
+          && request.resource.data.balances.TRY >= 0;
+
+        allow delete: if false;
+      }
+
+      // Transactions: shops/{uid}/transactions/{txId}
+      match /transactions/{txId} {
+        allow read: if isOwner(uid);
+
+        allow create: if isOwner(uid)
+          && request.resource.data.type is string
+          && request.resource.data.description is string
+          && request.resource.data.details is map
+          && request.resource.data.currenciesInvolved is list
+          && (request.resource.data.createdAt == request.time || request.resource.data.createdAt is timestamp);
+
+        allow update, delete: if false;
+      }
+    }
+  }
+}
