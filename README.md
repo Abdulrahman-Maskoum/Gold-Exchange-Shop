@@ -1,35 +1,82 @@
-# Gold Exchange Shop (Flutter + Firebase)
+# Gold Exchange Shop
 
-تطبيق لإدارة محل واحد لبيع/شراء الذهب وصرافة العملات (يدوي بالكامل) مع Firebase.
+A Flutter and Firebase-based mobile application designed for managing gold trading and currency exchange operations within a single shop environment.
 
-## ما يطابق المتطلبات (مختصر)
-- كل الأسعار والكميات تدخل يدويًا.
-- لا يوجد تعديل تلقائي للأسعار.
-- كل العمليات (بيع/شراء/صرف/تعديل مخزون) = حساب إجمالي + نافذة Confirm/Cancel + تنفيذ بعد Confirm فقط.
-- المخزون لا يمكن أن يصبح سالبًا (مفروض داخل Firestore transactions).
-- تسجيل دخول: Username + Password (يتم تحويل Username → Email داخليًا).
-- منع الدخول إن لم يكن البريد مفعّلًا (مع إرسال Verification Email).
-- Register: Username فريد + Email + Password + Shop name + Shop address.
-- بعد التسجيل: شاشة CAPTCHA بسيطة (سؤال رياضي) ثم إرسال Verification Email.
-- معاملات transactions فقط تحتوي createdAt (serverTimestamp).
+## Overview
 
-## إعداد Firebase (لازم أنت تسويه)
-1) أنشئ Firebase project.
-2) فعّل Authentication (Email/Password).
-3) فعّل Cloud Firestore.
-4) أضف تطبيق Android و iOS و ضع ملفات:
-   - android/app/google-services.json
-   - ios/Runner/GoogleService-Info.plist
-5) ضع قواعد Firestore من الملف `firestore.rules`.
+Gold Exchange Shop provides a centralized platform for handling gold inventory, currency exchange transactions, customer operations, and shop administration. The application was developed as an academic software engineering project with a focus on secure transaction processing, inventory management, and user authentication.
 
-## تشغيل
-```bash
-flutter pub get
-flutter run
-```
+## Features
 
-## ملاحظات مهمة
-- قراءة `usernames/{username}` في القواعد مسموحة كـ **get فقط** حتى نقدر نعمل Username→Email قبل تسجيل الدخول (بدون list).
-- أسعار الـ Home هي Display فقط وغير مستخدمة بالحسابات.
-- CAPTCHA هنا “بسيط” داخل التطبيق. لو بدك CAPTCHA حقيقي (reCAPTCHA/AppCheck) خبرني وبجهز لك دمج رسمي.
-- فلترة Transactions حسب (التاريخ + العملة) قد تتطلب **Composite Index**؛ إذا ظهر لك رابط إنشاء Index من Firebase Console انسخه ونفذه.
+* User registration and authentication
+* Email verification using Firebase Authentication
+* Username-based login system
+* Gold buying and selling management
+* Currency exchange management
+* Inventory tracking and stock control
+* Transaction recording and history management
+* Shop information management
+* Firestore database integration
+* Secure transaction validation
+* Responsive Flutter user interface
+
+## Technologies Used
+
+* Flutter
+* Dart
+* Firebase Authentication
+* Cloud Firestore
+* Firebase Security Rules
+* Material Design
+
+## Key Functionalities
+
+### Authentication System
+
+* User registration with email and password
+* Unique username validation
+* Email verification before account access
+* Secure login process
+
+### Gold Management
+
+* Gold inventory tracking
+* Buy and sell operations
+* Stock quantity validation
+* Transaction confirmation workflow
+
+### Currency Exchange
+
+* Currency exchange transaction management
+* Manual rate handling
+* Transaction recording and tracking
+
+### Database Management
+
+* Cloud Firestore integration
+* Secure data storage
+* Transaction-based updates
+* User and shop data management
+
+## My Contribution
+
+This project was designed and developed as part of an academic software engineering project.
+
+Key responsibilities included:
+
+* Flutter application development
+* User interface implementation
+* Firebase Authentication integration
+* Firestore database design
+* Inventory management logic
+* Transaction processing workflows
+* Security rules implementation
+* System testing and validation
+
+## Project Purpose
+
+The purpose of this project is to provide a practical solution for managing gold trading and currency exchange operations while ensuring secure transaction handling, inventory control, and efficient business management.
+
+## Repository
+
+This repository contains the source code of the Gold Exchange Shop application developed using Flutter and Firebase.
